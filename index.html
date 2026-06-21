@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>קלפי פעלים בעברית - תרגול לנכבדים</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>🃏 קלפי פעלים בעברית</h1>
+  <p>ללחוץ על קלף כדי להסתובב ולגלות את התרגום</p>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-target="cardsView">קלפים</button>
+  <button data-target="tableView">טבלת מילים</button>
+  <button data-target="gameView">משחק התאמה</button>
+</nav>
+
+<main>
+  <section id="cardsView" class="view active">
+    <div class="cards-toolbar">
+      <button id="shuffleBtn">🔀 ערבב קלפים</button>
+      <button id="flipAllBtn">🔄 הפוך הכל</button>
+    </div>
+    <div class="card-grid" id="cardGrid"></div>
+  </section>
+
+  <section id="tableView" class="view">
+    <table class="word-table">
+      <thead>
+        <tr>
+          <th>אייקון</th>
+          <th>עברית</th>
+          <th>English</th>
+        </tr>
+      </thead>
+      <tbody id="wordTableBody"></tbody>
+    </table>
+  </section>
+
+  <section id="gameView" class="view">
+    <p>מצאו את הזוגות: עברית מתאימה לאנגלית 🧠</p>
+    <div class="game-toolbar">
+      <button id="restartGameBtn">🔁 משחק חדש</button>
+      <span id="gameStatus"></span>
+    </div>
+    <div class="memory-grid" id="memoryGrid"></div>
+  </section>
+</main>
+
+<footer>נוצר ללימוד עברית בכיף 💛</footer>
+
+<script src="words.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
