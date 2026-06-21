@@ -1,3 +1,59 @@
+// ---------- Confetti ----------
+const confettiCanvas = document.getElementById("confettiCanvas");
+const confettiCtx = confettiCanvas.getContext("2d");
+let confettiParticles = [];
+let confettiAnimId = null;
+
+function resizeConfettiCanvas() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeConfettiCanvas);
+resizeConfettiCanvas();
+
+function throwConfetti() {
+  const colors = ["#c0584b", "#4a7c63", "#e9c178", "#8fbfa0", "#f2b8a2", "#7fa8c9"];
+  const newParticles = Array.from({ length: 150 }, () => ({
+    x: Math.random() * confettiCanvas.width,
+    y: -20 - Math.random() * confettiCanvas.height * 0.3,
+    size: 6 + Math.random() * 6,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    speedY: 2 + Math.random() * 3,
+    speedX: -2 + Math.random() * 4,
+    rotation: Math.random() * 360,
+    rotationSpeed: -6 + Math.random() * 12,
+  }));
+  confettiParticles = confettiParticles.concat(newParticles);
+
+  if (!confettiAnimId) animateConfetti();
+}
+
+function animateConfetti() {
+  confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+  confettiParticles.forEach((p) => {
+    p.y += p.speedY;
+    p.x += p.speedX;
+    p.rotation += p.rotationSpeed;
+
+    confettiCtx.save();
+    confettiCtx.translate(p.x, p.y);
+    confettiCtx.rotate((p.rotation * Math.PI) / 180);
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+    confettiCtx.restore();
+  });
+
+  confettiParticles = confettiParticles.filter((p) => p.y < confettiCanvas.height + 30);
+
+  if (confettiParticles.length > 0) {
+    confettiAnimId = requestAnimationFrame(animateConfetti);
+  } else {
+    confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    confettiAnimId = null;
+  }
+}
+
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -127,6 +183,7 @@ function onCardClick(cell) {
       updateStatus();
       if (matchedCount === 8) {
         setTimeout(() => (gameStatusEl.textContent = "🎉 כל הכבוד! סיימת את המשחק!"), 200);
+        throwConfetti();
       }
     } else {
       a.classList.add("wrong");
@@ -179,6 +236,7 @@ function onDayClick(cell) {
     updateDaysStatus();
     if (nextDayIndex === DAYS.length) {
       setTimeout(() => (daysGameStatusEl.textContent = "🎉 כל הכבוד! סידרת את כל הימים!"), 200);
+      throwConfetti();
     }
   } else {
     cell.classList.add("wrong");
