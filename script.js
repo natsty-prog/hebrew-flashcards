@@ -75,6 +75,7 @@ tabButtons.forEach((btn) => {
     document.getElementById(btn.dataset.target).classList.add("active");
     if (btn.dataset.target === "gameView" && !gameStarted) startGame();
     if (btn.dataset.target === "daysView" && !daysGameStarted) startDaysGame();
+    if (btn.dataset.target === "bureauView" && !bureauGameStarted) startBureauGame();
   });
 });
 
@@ -104,6 +105,7 @@ function renderCards(order, container = cardGrid) {
 
 renderCards(WORDS);
 renderCards(DAYS, document.getElementById("daysCardGrid"));
+renderCards(BUREAUCRACY, document.getElementById("bureauCardGrid"));
 
 document.getElementById("shuffleBtn").addEventListener("click", () => {
   renderCards(shuffle(WORDS));
@@ -245,3 +247,93 @@ function onDayClick(cell) {
 }
 
 document.getElementById("restartDaysGameBtn").addEventListener("click", startDaysGame);
+
+// ---------- Bureaucracy Queue Game ----------
+const bureauTicketEl = document.getElementById("bureauTicket");
+const bureauLivesEl = document.getElementById("bureauLives");
+const bureauProgressFill = document.getElementById("bureauProgressFill");
+const bureauProgressCounter = document.getElementById("bureauProgressCounter");
+const bureauQuestionWord = document.getElementById("bureauQuestionWord");
+const bureauOptionsEl = document.getElementById("bureauOptions");
+const bureauFeedbackEl = document.getElementById("bureauFeedback");
+
+let bureauGameStarted = false;
+let bureauQueue = [];
+let bureauSolved = 0;
+let bureauLives = 3;
+let bureauTicketNumber = 1;
+let bureauLocked = false;
+
+function startBureauGame() {
+  bureauGameStarted = true;
+  bureauQueue = shuffle(BUREAUCRACY);
+  bureauSolved = 0;
+  bureauLives = 3;
+  bureauTicketNumber = 1;
+  bureauLocked = false;
+  bureauFeedbackEl.textContent = "";
+  updateBureauStatus();
+  nextBureauQuestion();
+}
+
+function updateBureauStatus() {
+  bureauTicketEl.textContent = bureauTicketNumber;
+  bureauLivesEl.textContent = "❤️".repeat(Math.max(bureauLives, 0)) + "🖤".repeat(3 - bureauLives);
+  bureauProgressFill.style.width = `${(bureauSolved / BUREAUCRACY.length) * 100}%`;
+  bureauProgressCounter.textContent = `${bureauSolved} / ${BUREAUCRACY.length}`;
+}
+
+function nextBureauQuestion() {
+  if (bureauSolved >= BUREAUCRACY.length) {
+    bureauQuestionWord.textContent = "🎉";
+    bureauOptionsEl.innerHTML = "";
+    bureauFeedbackEl.textContent = "כל הכבוד! קיבלתם את האישור וסיימתם בלשכה!";
+    throwConfetti();
+    return;
+  }
+
+  bureauLocked = false;
+  const word = bureauQueue[bureauSolved];
+  bureauQuestionWord.textContent = `${word.icon} ${word.he}`;
+
+  const distractors = shuffle(BUREAUCRACY.filter((w) => w.he !== word.he)).slice(0, 3);
+  const options = shuffle([word, ...distractors]);
+
+  bureauOptionsEl.innerHTML = "";
+  options.forEach((opt) => {
+    const btn = document.createElement("button");
+    btn.className = "bureau-option";
+    btn.textContent = opt.en;
+    btn.addEventListener("click", () => onBureauAnswer(btn, opt.he === word.he));
+    bureauOptionsEl.appendChild(btn);
+  });
+}
+
+function onBureauAnswer(btn, isCorrect) {
+  if (bureauLocked) return;
+  bureauLocked = true;
+
+  if (isCorrect) {
+    btn.classList.add("correct");
+    bureauSolved++;
+    bureauTicketNumber++;
+    bureauFeedbackEl.textContent = "🔖 חותמת אושרה! לעמדה הבאה.";
+    updateBureauStatus();
+    setTimeout(nextBureauQuestion, 700);
+  } else {
+    btn.classList.add("wrong");
+    bureauLives--;
+    bureauFeedbackEl.textContent = "🚫 \"זה לא הטופס הנכון, גש לעמדה אחרת\" - אומר הפקיד.";
+    updateBureauStatus();
+    if (bureauLives <= 0) {
+      setTimeout(() => {
+        bureauFeedbackEl.textContent = "💀 נשלחתם לסוף התור... ננסה שוב!";
+        setTimeout(startBureauGame, 1200);
+      }, 700);
+    } else {
+      setTimeout(nextBureauQuestion, 900);
+    }
+  }
+}
+
+document.getElementById("restartBureauBtn").addEventListener("click", startBureauGame);

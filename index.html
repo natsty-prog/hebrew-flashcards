@@ -18,6 +18,7 @@
   <button data-target="tableView">טבלת מילים</button>
   <button data-target="gameView">משחק התאמה</button>
   <button data-target="daysView">ימי השבוע</button>
+  <button data-target="bureauView">בירוקרטיה</button>
 </nav>
 
 <main>
@@ -62,6 +63,39 @@
       <span id="daysGameStatus"></span>
     </div>
     <div class="memory-grid" id="daysGameGrid"></div>
+  </section>
+
+  <section id="bureauView" class="view">
+    <h2>🏢 בירוקרטיה - מילים להישרדות בלשכה</h2>
+    <div class="card-grid" id="bureauCardGrid"></div>
+
+    <h3 style="margin-top:36px;">🎫 משחק: התור בלשכה</h3>
+    <p>ענו נכון כדי להתקדם בתור. שלוש תשובות שגויות ופקיד שולח אתכם לסוף התור!</p>
+
+    <div class="bureau-game">
+      <div class="bureau-status">
+        <div class="bureau-ticket">🎫 מספר בתור: <span id="bureauTicket">1</span></div>
+        <div class="bureau-lives" id="bureauLives"></div>
+      </div>
+
+      <div class="bureau-progress-track">
+        <div class="bureau-progress-fill" id="bureauProgressFill"></div>
+        <div class="bureau-progress-counter" id="bureauProgressCounter">0 / 12</div>
+      </div>
+
+      <div class="bureau-question-card">
+        <div class="bureau-question-label">מה הפירוש של:</div>
+        <div class="bureau-question-word" id="bureauQuestionWord">...</div>
+      </div>
+
+      <div class="bureau-options" id="bureauOptions"></div>
+
+      <div class="bureau-feedback" id="bureauFeedback"></div>
+
+      <div class="game-toolbar">
+        <button id="restartBureauBtn">🔁 משחק חדש</button>
+      </div>
+    </div>
   </section>
 </main>
 

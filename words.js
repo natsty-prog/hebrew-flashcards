@@ -24,3 +24,19 @@ const DAYS = [
   { he: "יום שישי", en: "Friday", icon: "6️⃣" },
   { he: "שבת", en: "Saturday", icon: "🕯️" },
 ];
+
+// Bureaucracy survival vocabulary
+const BUREAUCRACY = [
+  { he: "תעודת זהות", en: "ID card", icon: "🪪" },
+  { he: "טופס", en: "form", icon: "📄" },
+  { he: "תור", en: "queue / turn", icon: "🎫" },
+  { he: "חותמת", en: "stamp", icon: "🔖" },
+  { he: "אגרה", en: "fee", icon: "💰" },
+  { he: "חתימה", en: "signature", icon: "✒️" },
+  { he: "אישור", en: "approval", icon: "✅" },
+  { he: "בקשה", en: "application/request", icon: "📝" },
+  { he: "פקיד", en: "clerk", icon: "🧑‍💼" },
+  { he: "תעודה", en: "certificate", icon: "📜" },
+  { he: "קנס", en: "fine", icon: "🚫" },
+  { he: "תיק", en: "file", icon: "🗂️" },
+];
