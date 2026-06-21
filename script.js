@@ -216,7 +216,7 @@ function startDaysGame() {
     const cell = document.createElement("div");
     cell.className = "memory-card";
     cell.dataset.dayIndex = DAYS.indexOf(day);
-    cell.textContent = `${day.icon} ${day.he}`;
+    cell.textContent = day.he;
     cell.addEventListener("click", () => onDayClick(cell));
     daysGameGrid.appendChild(cell);
   });
