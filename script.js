@@ -18,14 +18,15 @@ tabButtons.forEach((btn) => {
     btn.classList.add("active");
     document.getElementById(btn.dataset.target).classList.add("active");
     if (btn.dataset.target === "gameView" && !gameStarted) startGame();
+    if (btn.dataset.target === "daysView" && !daysGameStarted) startDaysGame();
   });
 });
 
 // ---------- Flashcards ----------
 const cardGrid = document.getElementById("cardGrid");
 
-function renderCards(order) {
-  cardGrid.innerHTML = "";
+function renderCards(order, container = cardGrid) {
+  container.innerHTML = "";
   order.forEach((word) => {
     const card = document.createElement("div");
     card.className = "flip-card";
@@ -41,11 +42,12 @@ function renderCards(order) {
         </div>
       </div>`;
     card.addEventListener("click", () => card.classList.toggle("flipped"));
-    cardGrid.appendChild(card);
+    container.appendChild(card);
   });
 }
 
 renderCards(WORDS);
+renderCards(DAYS, document.getElementById("daysCardGrid"));
 
 document.getElementById("shuffleBtn").addEventListener("click", () => {
   renderCards(shuffle(WORDS));
@@ -140,3 +142,48 @@ function onCardClick(cell) {
 }
 
 document.getElementById("restartGameBtn").addEventListener("click", startGame);
+
+// ---------- Days Order Game ----------
+const daysGameGrid = document.getElementById("daysGameGrid");
+const daysGameStatusEl = document.getElementById("daysGameStatus");
+let daysGameStarted = false;
+let nextDayIndex = 0;
+
+function startDaysGame() {
+  daysGameStarted = true;
+  nextDayIndex = 0;
+  updateDaysStatus();
+  const shuffled = shuffle(DAYS);
+  daysGameGrid.innerHTML = "";
+  shuffled.forEach((day) => {
+    const cell = document.createElement("div");
+    cell.className = "memory-card";
+    cell.dataset.dayIndex = DAYS.indexOf(day);
+    cell.textContent = `${day.icon} ${day.he}`;
+    cell.addEventListener("click", () => onDayClick(cell));
+    daysGameGrid.appendChild(cell);
+  });
+}
+
+function updateDaysStatus() {
+  daysGameStatusEl.textContent = `הבא בתור: ${nextDayIndex < DAYS.length ? DAYS[nextDayIndex].he : ""}`;
+}
+
+function onDayClick(cell) {
+  if (cell.classList.contains("matched")) return;
+  const dayIndex = Number(cell.dataset.dayIndex);
+
+  if (dayIndex === nextDayIndex) {
+    cell.classList.add("matched");
+    nextDayIndex++;
+    updateDaysStatus();
+    if (nextDayIndex === DAYS.length) {
+      setTimeout(() => (daysGameStatusEl.textContent = "🎉 כל הכבוד! סידרת את כל הימים!"), 200);
+    }
+  } else {
+    cell.classList.add("wrong");
+    setTimeout(() => cell.classList.remove("wrong"), 500);
+  }
+}
+
+document.getElementById("restartDaysGameBtn").addEventListener("click", startDaysGame);

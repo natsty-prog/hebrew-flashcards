@@ -17,6 +17,7 @@
   <button class="active" data-target="cardsView">קלפים</button>
   <button data-target="tableView">טבלת מילים</button>
   <button data-target="gameView">משחק התאמה</button>
+  <button data-target="daysView">ימי השבוע</button>
 </nav>
 
 <main>
@@ -48,6 +49,19 @@
       <span id="gameStatus"></span>
     </div>
     <div class="memory-grid" id="memoryGrid"></div>
+  </section>
+
+  <section id="daysView" class="view">
+    <h2>📅 ימי השבוע</h2>
+    <div class="card-grid" id="daysCardGrid"></div>
+
+    <h3 style="margin-top:36px;">🧠 משחק סדר הימים</h3>
+    <p>לחצו על הימים בעברית בסדר הנכון, מיום ראשון עד שבת</p>
+    <div class="game-toolbar">
+      <button id="restartDaysGameBtn">🔁 משחק חדש</button>
+      <span id="daysGameStatus"></span>
+    </div>
+    <div class="memory-grid" id="daysGameGrid"></div>
   </section>
 </main>
 

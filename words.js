@@ -13,3 +13,14 @@ const WORDS = [
   { he: "לאהוב", en: "to love", icon: "❤️" },
   { he: "לומר", en: "to say", icon: "💬" },
 ];
+
+// Days of the week
+const DAYS = [
+  { he: "יום ראשון", en: "Sunday", icon: "1️⃣" },
+  { he: "יום שני", en: "Monday", icon: "2️⃣" },
+  { he: "יום שלישי", en: "Tuesday", icon: "3️⃣" },
+  { he: "יום רביעי", en: "Wednesday", icon: "4️⃣" },
+  { he: "יום חמישי", en: "Thursday", icon: "5️⃣" },
+  { he: "יום שישי", en: "Friday", icon: "6️⃣" },
+  { he: "שבת", en: "Saturday", icon: "🕯️" },
+];
